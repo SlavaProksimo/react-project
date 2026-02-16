@@ -1,0 +1,57 @@
+@use "./_variables" as *;
+h1 {
+	color: $black;
+}
+input::placeholder {
+	padding-left: 16px;
+	color: #c3c1e5;
+}
+select {
+	padding: 5px;
+	max-width: 100%;
+
+	height: 38px;
+	background-color: $primary;
+	border-radius: 5px;
+	font-size: 18px;
+	font-weight: 500;
+	color: $white;
+	cursor: pointer;
+}
+option {
+	background-color: $white;
+	color: $primary;
+}
+
+select option {
+	font-size: 16px;
+	font-weight: 400;
+	border-radius: 10px;
+}
+
+button {
+	background-color: $primary;
+	width: 38px;
+	height: 38px;
+	border-radius: 5px;
+}
+
+li {
+	display: flex;
+	justify-content: space-between;
+	font-size: 20px;
+	font-weight: 500;
+	cursor: pointer;
+	&:nth-child(3) {
+		text-decoration: line-through;
+		color: #25252580;
+	}
+}
+
+hr {
+	background-color: $primary;
+	width: 520px;
+	height: 1px;
+	opacity: 50%;
+	margin: 17px 0px 17px 0px;
+}

@@ -1,15 +1,9 @@
+import Index from "./pages/home";
 
-
-
-
-const App = ()=> {
-
-
+const App = () => {
   return (
-    <>
-     <h1>Привет</h1>
-    </>
-  )
-}
+<Index />
+  );
+};
 
-export default App
+export default App;
