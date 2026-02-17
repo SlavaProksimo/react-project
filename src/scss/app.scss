@@ -21,39 +21,6 @@
 	padding-bottom: 18px;
 }
 
-.todo-search__block {
-	display: flex;
-
-	gap: 16px;
-
-	&-input {
-		padding-left: 16px;
-		width: 595px;
-		height: 38px;
-		border: 1px solid $primary;
-		border-radius: 5px;
-		color: $primary;
-
-		&:focus {
-			-webkit-box-shadow: -1px 0px 15px 8px rgba(108, 99, 255, 0.42);
-			-moz-box-shadow: -1px 0px 15px 8px rgba(108, 99, 255, 0.42);
-			box-shadow: -1px 0px 15px 8px rgba(108, 99, 255, 0.42);
-			border: 2px solid $primary;
-			outline: none;
-
-			&::placeholder {
-				opacity: 0;
-			}
-		}
-	}
-
-	&-svg {
-		position: absolute;
-		right: 10px;
-		top: 8.5px;
-	}
-}
-
 .input-svg {
 	position: relative;
 }
@@ -62,11 +29,13 @@
 	padding-top: 30px;
 	display: flex;
 	justify-content: center;
+
 	&__new-todo {
 		display: flex;
 		justify-content: space-between;
 		gap: 20px;
 	}
+
 	&__input {
 		appearance: none;
 		-webkit-appearance: none;

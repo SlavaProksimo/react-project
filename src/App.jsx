@@ -1,9 +1,7 @@
-import Index from "./pages/home";
+import HomePage from "./pages/home/HomePage";
 
 const App = () => {
-  return (
-<Index />
-  );
+  return <HomePage />;
 };
 
 export default App;
