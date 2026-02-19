@@ -3,11 +3,11 @@ import TodoItem from "../todo-item/TodoItem";
 const NewTasks = () => {
   return (
     <ul className="todo-list__ul">
-      <TodoItem />
+      <TodoItem title="Проснуться" isDone={false} id />
       <hr />
-      <TodoItem />
+      <TodoItem title="Не уснуть" isDone />
       <hr />
-      <TodoItem />
+      <TodoItem title="Купить молоко" isDone={false} />
     </ul>
   );
 };

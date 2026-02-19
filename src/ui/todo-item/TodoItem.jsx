@@ -1,9 +1,11 @@
-const TodoItem = () => {
+const TodoItem = (props) => {
+  const { title = "", isDone } = props;
   return (
     <li>
       {" "}
       <div className="todo-list__new-todo">
-        <input className="todo-list__input" type="checkbox" /> NOTE #1
+        <input className="todo-list__input" type="checkbox" checked={isDone} />
+        {title}
       </div>
       <div className="li-interaction">
         <div className="li-interaction__todo-editing">
