@@ -1,6 +1,13 @@
 const ButtonTheme = () => {
+  const onClickTheme = () => {
+    console.log("Меняем тему");
+  };
   return (
-    <button className="btn btn-change__background" type="button">
+    <button
+      className="btn btn-change__background"
+      type="button"
+      onClick={onClickTheme}
+    >
       <svg
         width="22"
         height="22"

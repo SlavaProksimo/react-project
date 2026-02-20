@@ -1,6 +1,9 @@
-const Button = () => {
+const ButtonAddTodo = () => {
+  const onClickAddTodo = () => {
+    console.log("Добавляем задачу");
+  };
   return (
-    <button className="btn btn-addTodo" type="button">
+    <button className="btn btn-addTodo" type="button" onClick={onClickAddTodo}>
       <svg
         width="24"
         height="24"
@@ -18,4 +21,4 @@ const Button = () => {
     </button>
   );
 };
-export default Button;
+export default ButtonAddTodo;

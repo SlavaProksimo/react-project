@@ -28,5 +28,9 @@
 		position: absolute;
 		right: 10px;
 		top: 8.5px;
+		cursor: pointer;
+	}
+	&-svg:active {
+		transform: scale(0.8);
 	}
 }

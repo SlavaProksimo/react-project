@@ -1,6 +1,8 @@
 import ButtonTheme from "../button/ButtonTheme";
 import Select from "../select/Select";
-
+const onInputSearch = (event) => {
+  console.log(event.target.value);
+};
 const Search = () => {
   return (
     <div className="todo-search__block">
@@ -9,6 +11,7 @@ const Search = () => {
           className="todo-search__block-input"
           type="text"
           placeholder="Serach note..."
+          onInput={onInputSearch}
         />
 
         <svg

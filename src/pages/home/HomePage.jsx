@@ -1,6 +1,6 @@
-import Button from "../../ui/button/Button";
-import NewTasks from "../../ui/new-tasks/NewTasks";
-import Search from "../../ui/search/Search";
+import ButtonAddTodo from "@/ui/button/ButtonAddTodo";
+import NewTasks from "ui/new-tasks/NewTasks";
+import Search from "ui/search/Search";
 const HomePage = () => {
   return (
     <div className="wrapper">
@@ -12,7 +12,7 @@ const HomePage = () => {
             <NewTasks />
           </div>
           <div className="btn btn-todo-add">
-            <Button />
+            <ButtonAddTodo />
           </div>
         </div>
       </div>

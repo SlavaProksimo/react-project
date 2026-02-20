@@ -1,15 +1,36 @@
 const TodoItem = (props) => {
-  const { title = "", isDone } = props;
+  const { title = "" } = props;
+
+  const onClickEdit = () => {
+    console.log("Реадктировать задачу");
+  };
+
+  const onClickDelete = () => {
+    console.log("Удалить задачу");
+  };
+
+  const onClickChange = (event) => {
+    console.log(event.target.checked);
+  };
+
   return (
     <li>
-      {" "}
       <div className="todo-list__new-todo">
-        <input className="todo-list__input" type="checkbox" checked={isDone} />
+        <input
+          className="todo-list__input"
+          type="checkbox"
+          onChange={onClickChange}
+        />
         {title}
       </div>
       <div className="li-interaction">
-        <div className="li-interaction__todo-editing">
+        <button
+          className="li-interaction__todo-editing"
+          type="button"
+          onClick={onClickEdit}
+        >
           <svg
+            className="li-interaction__todo-editing__svg"
             width="18"
             height="18"
             viewBox="0 0 18 18"
@@ -23,9 +44,14 @@ const TodoItem = (props) => {
               stroke-linejoin="round"
             />
           </svg>
-        </div>
-        <div className="li-interaction__todo-delete">
+        </button>
+        <button
+          className="li-interaction__todo-delete"
+          type="button"
+          onClick={onClickDelete}
+        >
           <svg
+            className="li-interaction__todo-delete__svg"
             width="18"
             height="18"
             viewBox="0 0 18 18"
@@ -48,7 +74,7 @@ const TodoItem = (props) => {
             <path d="M10.5 9V12.75" stroke="#CDCDCD" stroke-linecap="round" />
             <path d="M7.5 9V12.75" stroke="#CDCDCD" stroke-linecap="round" />
           </svg>
-        </div>
+        </button>
       </div>
     </li>
   );
