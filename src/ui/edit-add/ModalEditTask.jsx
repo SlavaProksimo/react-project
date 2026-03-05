@@ -1,4 +1,4 @@
-const TodoAdd = ({ close, newTaskTitle, setNewTaskTitle, onApply }) => {
+const ModalEditTask = ({ close, newTaskTitle, setNewTaskTitle, onApply }) => {
   return (
     <>
       <div className="overlay"></div>
@@ -7,10 +7,10 @@ const TodoAdd = ({ close, newTaskTitle, setNewTaskTitle, onApply }) => {
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="todo-add__box">
-          <h2 className="todo-add__title">New Note</h2>
+          <h2 className="todo-add__title">Edit Note</h2>
           <input
             className="todo-add__input"
-            placeholder="Input your note..."
+            placeholder="Edit your note..."
             value={newTaskTitle}
             onInput={(event) => setNewTaskTitle(event.target.value)}
           />
@@ -27,7 +27,7 @@ const TodoAdd = ({ close, newTaskTitle, setNewTaskTitle, onApply }) => {
               type="button"
               onClick={onApply}
             >
-              Apply
+              Save
             </button>
           </div>
         </div>
@@ -36,4 +36,4 @@ const TodoAdd = ({ close, newTaskTitle, setNewTaskTitle, onApply }) => {
   );
 };
 
-export default TodoAdd;
+export default ModalEditTask;
