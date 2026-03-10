@@ -9,14 +9,14 @@ import ModalEditTask from "@/ui/edit-add/ModalEditTask";
 
 const HomePage = () => {
   const [open, setOpen] = useState(false);
-  const [taskToEdit, setTaskToEdit] = useState(null); // Для редактирование задачи
+
   //Закрыть модалку
   const closeModal = () => {
     setOpen(false);
     setNewTaskTitle("");
     setTaskToEdit(null);
   };
-  //ы
+
   const {
     tasks,
     setTasks,
@@ -29,7 +29,9 @@ const HomePage = () => {
     handleInputChange,
     showNotFound,
     finalTodos,
-  } = useTodos({ closeModal, taskToEdit });
+    setTaskToEdit,
+    taskToEdit,
+  } = useTodos({ closeModal });
 
   return (
     <div className="general-wrapper" onMouseDown={closeModal}>

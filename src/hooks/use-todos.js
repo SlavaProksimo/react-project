@@ -1,9 +1,20 @@
-import { useState } from "react";
-export const useTodos = ({ closeModal, taskToEdit }) => {
-  const [tasks, setTasks] = useState([]);
+import { useEffect, useState } from "react";
+export const useTodos = ({ closeModal }) => {
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+      return JSON.parse(savedTasks);
+    }
+    return [];
+  });
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [searchTask, setSearchTask] = useState("");
   const [filter, setFilter] = useState("All");
+  const [taskToEdit, setTaskToEdit] = useState(null); // Для редактирование задачи
+  //Сохраняем тудушки после перезагрузки страницы
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   //Проверка для кнопки Apply, чтобы закрывать модалку только если было что-то введено
   const addNewTask = () => {
@@ -70,5 +81,7 @@ export const useTodos = ({ closeModal, taskToEdit }) => {
     handleInputChange,
     showNotFound,
     finalTodos,
+    setTaskToEdit,
+    taskToEdit,
   };
 };
