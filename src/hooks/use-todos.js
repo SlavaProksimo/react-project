@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 export const useTodos = ({ closeModal, open }) => {
   const [tasks, setTasks] = useState(() => {
     //Сохраняем тудушки после перезагрузки страницы
@@ -26,7 +26,7 @@ export const useTodos = ({ closeModal, open }) => {
   }, [tasks]);
 
   //Проверка для кнопки Apply, чтобы закрывать модалку только если было что-то введено
-  const addNewTask = () => {
+  const addNewTask = useCallback(() => {
     if (newTaskTitle.trim().length > 0) {
       const newTask = {
         title: newTaskTitle.trim(),
@@ -36,9 +36,9 @@ export const useTodos = ({ closeModal, open }) => {
       setNewTaskTitle("");
       closeModal();
     }
-  };
+  }, [newTaskTitle, closeModal]);
   // Редактируем задачу
-  const updateTask = () => {
+  const updateTask = useCallback(() => {
     if (taskToEdit !== null) {
       const updatedTasks = tasks.map((task, index) => {
         if (index === taskToEdit && newTaskTitle.trim().length > 0) {
@@ -52,20 +52,26 @@ export const useTodos = ({ closeModal, open }) => {
       setTasks(updatedTasks);
       closeModal();
     }
-  };
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setSearchTask(value);
-  };
+  }, [taskToEdit, tasks, closeModal, newTaskTitle, taskToEdit]);
+
+  const handleInputChange = useCallback(
+    (event) => {
+      const value = event.target.value;
+      setSearchTask(value);
+    },
+    [setSearchTask],
+  );
   //поиск задач
-  const filteredTodos = searchTask
-    ? tasks.filter((task) => task.title?.includes(searchTask.toLowerCase()))
-    : tasks;
+  const filteredTodos = useMemo(() => {
+    return searchTask
+      ? tasks.filter((task) => task.title?.includes(searchTask.toLowerCase()))
+      : tasks;
+  }, [searchTask, tasks]);
 
   //Если задач нету или не найдена , то показываем img
   const showNotFound = filteredTodos.length === 0;
   //Фильтрация для Select
-  const filteredBySelect = () => {
+  const filteredBySelect = useMemo(() => {
     switch (filter) {
       case "All":
       default:
@@ -75,9 +81,9 @@ export const useTodos = ({ closeModal, open }) => {
       case "Incomplete":
         return filteredTodos.filter((task) => task.isDone === false);
     }
-  };
+  }, [filter, filteredTodos]);
 
-  const finalTodos = filteredBySelect();
+  const finalTodos = filteredBySelect;
 
   return {
     tasks,

@@ -1,3 +1,4 @@
+import { memo } from "react";
 const ButtonTheme = () => {
   const onClickTheme = () => {
     console.log("Меняем тему");
@@ -25,4 +26,4 @@ const ButtonTheme = () => {
     </button>
   );
 };
-export default ButtonTheme;
+export default memo(ButtonTheme);

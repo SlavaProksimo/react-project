@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 const TodoItem = (props) => {
   const {
     title = "",
@@ -11,25 +12,31 @@ const TodoItem = (props) => {
   } = props;
 
   //Редактировать задачу
-  const handleEditClick = (e) => {
-    e.stopPropagation();
-    setNewTaskTitle(title);
-    setTaskToEdit(index);
-    setOpen(true);
-  };
+  const handleEditClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      setNewTaskTitle(title);
+      setTaskToEdit(index);
+      setOpen(true);
+    },
+    [title, index, setNewTaskTitle, setTaskToEdit, setOpen],
+  );
   //Удалить задачу
-  const onClickDelete = () => {
+  const onClickDelete = useCallback(() => {
     const deleteTask = tasks.filter((t, i) => i !== index);
     setTasks(deleteTask);
-  };
-  const handleCheckboxChange = (event) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index] = {
-      ...updatedTasks[index],
-      isDone: event.target.checked,
-    };
-    setTasks(updatedTasks);
-  };
+  }, [setTasks, tasks]);
+  const handleCheckboxChange = useCallback(
+    (event) => {
+      const updatedTasks = [...tasks];
+      updatedTasks[index] = {
+        ...updatedTasks[index],
+        isDone: event.target.checked,
+      };
+      setTasks(updatedTasks);
+    },
+    [tasks, setTasks],
+  );
 
   return (
     <li>
@@ -107,4 +114,4 @@ const TodoItem = (props) => {
   );
 };
 
-export default TodoItem;
+export default memo(TodoItem);

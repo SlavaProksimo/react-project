@@ -1,7 +1,11 @@
+import { memo, useCallback } from "react";
 const Select = ({ setFilter }) => {
-  const onChangekSelect = (event) => {
-    setFilter(event.target.value);
-  };
+  const onChangekSelect = useCallback(
+    (event) => {
+      setFilter(event.target.value);
+    },
+    [setFilter],
+  );
 
   return (
     <select name="todo-filter" onChange={onChangekSelect}>
@@ -11,4 +15,4 @@ const Select = ({ setFilter }) => {
     </select>
   );
 };
-export default Select;
+export default memo(Select);

@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 const TodoAdd = ({
   close,
   newTaskTitle,
@@ -5,20 +6,26 @@ const TodoAdd = ({
   onApply,
   inputRef,
 }) => {
+  const handleMouseDown = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+  const handleChange = useCallback(
+    (e) => {
+      setNewTaskTitle(e.target.value);
+    },
+    [setNewTaskTitle],
+  );
   return (
     <>
       <div className="overlay"></div>
-      <div
-        className="todo-add__general-box"
-        onMouseDown={(e) => e.stopPropagation()}
-      >
+      <div className="todo-add__general-box" onMouseDown={handleMouseDown}>
         <div className="todo-add__box">
           <h2 className="todo-add__title">New Note</h2>
           <input
             className="todo-add__input"
             placeholder="Input your note..."
             value={newTaskTitle}
-            onInput={(event) => setNewTaskTitle(event.target.value)}
+            onInput={handleChange}
             ref={inputRef}
           />
           <div className="todo-add__btn-box">
@@ -43,4 +50,4 @@ const TodoAdd = ({
   );
 };
 
-export default TodoAdd;
+export default memo(TodoAdd);
