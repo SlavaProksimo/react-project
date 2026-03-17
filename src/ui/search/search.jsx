@@ -1,6 +1,7 @@
 import ButtonTheme from "../button/ButtonTheme";
 import Select from "../select/Select";
 import { memo } from "react";
+
 const Search = ({ onSearchClick, onInputChange, value, setFilter }) => {
   return (
     <div className="todo-search__block">

@@ -32,6 +32,10 @@ select {
 	font-weight: 500;
 	color: $white;
 	cursor: pointer;
+	transition: background-color 0.2s ease;
+	&:focus {
+		background-color: #5850dd;
+	}
 }
 
 option {
