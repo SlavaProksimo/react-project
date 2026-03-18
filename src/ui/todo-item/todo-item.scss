@@ -1,11 +1,11 @@
 @use "../../scss/variables" as *;
 
 .li-interaction__todo-editing {
-	background-color: rgb(255, 255, 255);
+	background-color: $white;
 }
 
 .li-interaction__todo-delete {
-	background-color: rgb(255, 255, 255);
+	background-color: $white;
 }
 
 .li-interaction__todo-editing__svg:active {
@@ -24,7 +24,7 @@
 
 .todo-list__span {
 	text-decoration: none;
-	color: inherit;
+	color: $black;
 }
 
 .todo-title--completed {

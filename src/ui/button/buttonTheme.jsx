@@ -1,18 +1,15 @@
-import { ThemeContext } from "@/context/ThemeProvider";
-import { memo, useContext } from "react";
+import { useTheme } from "@/context/ThemeProvider";
+import { memo } from "react";
 const ButtonTheme = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
-  const onClickTheme = () => {
-    setTheme((prev) => !prev);
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button
       className="btn btn-change__background"
       type="button"
-      onClick={onClickTheme}
+      onClick={toggleTheme}
     >
-      {theme ? (
+      {theme === "dark" ? (
         <svg
           width="22"
           height="22"

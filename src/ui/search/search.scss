@@ -6,6 +6,7 @@
 	&-input {
 		padding-left: 16px;
 		width: 595px;
+		color: var(--inputText);
 	}
 
 	&-svg {
@@ -13,6 +14,7 @@
 		right: 10px;
 		top: 8.5px;
 		cursor: pointer;
+		filter: var(--filter);
 	}
 	&-svg:active {
 		transform: scale(0.8);

@@ -6,8 +6,6 @@ import Search from "ui/search/Search";
 import NotFound from "@/ui/not-found/NotFound";
 import { useTodos } from "@/hooks/use-todos";
 import ModalEditTask from "@/ui/edit-add/ModalEditTask";
-import clsx from "clsx";
-import { useTheme } from "@/context/ThemeProvider";
 
 const HomePage = () => {
   const [open, setOpen] = useState(false);
@@ -33,15 +31,8 @@ const HomePage = () => {
     currentTaskId,
   } = useTodos({ closeModal, open, setOpen });
 
-  const { theme } = useTheme();
-
   return (
-    <div
-      className={clsx("general-wrapper", {
-        dark: theme === true,
-        light: theme === false,
-      })}
-    >
+    <div className="general-wrapper">
       <div className="container">
         <div className="todo">
           <h1 className="todo-title">TODO LIST</h1>

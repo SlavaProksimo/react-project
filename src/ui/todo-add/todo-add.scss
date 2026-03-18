@@ -20,6 +20,7 @@
 	transform: translate(-50%, -50%);
 	border-radius: 16px;
 	z-index: 2;
+	border: 1px solid var(--borderWhite);
 }
 .todo-add__title {
 	display: flex;
@@ -28,8 +29,11 @@
 }
 
 .todo-add__input {
+	padding-left: 10px;
 	width: 440px;
 	margin-bottom: 128px;
+	color: var(--inputText);
+	border: 2px solid var(--inputText);
 }
 .todo-add__btn-box {
 	display: flex;
@@ -50,5 +54,5 @@
 }
 
 .btn-right {
-	color: $white;
+	color: $btnCol;
 }

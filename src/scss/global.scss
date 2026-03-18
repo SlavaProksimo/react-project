@@ -30,7 +30,7 @@ select {
 	border-radius: 5px;
 	font-size: 18px;
 	font-weight: 500;
-	color: $white;
+	color: $white-basik;
 	cursor: pointer;
 	transition: background-color 0.2s ease;
 	&:focus {
@@ -39,7 +39,7 @@ select {
 }
 
 option {
-	background-color: $white;
+	background-color: $white-basik;
 	color: $primary;
 }
 
@@ -98,4 +98,8 @@ button {
 
 button :active {
 	transform: scale(0.95);
+}
+
+.general-wrapper {
+	background-color: $white;
 }

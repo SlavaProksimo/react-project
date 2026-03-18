@@ -1,3 +1,24 @@
 $primary: #6c63ff;
 $black: #252525;
 $white: #f7f7f7;
+
+$white-basik: #f7f7f7;
+$btnCol: #f7f7f7;
+
+[data-theme="light"] {
+	--white: #f7f7f7;
+	--black: #252525;
+	--inputText: #6c63ff;
+}
+
+[data-theme="dark"] {
+	--white: #252525;
+	--black: #f7f7f7;
+	--borderWhite: white;
+	--inputText: #f7f7f7;
+	--filter: brightness(0) invert(1);
+	--inputText: #f7f7f7;
+}
+
+$white: var(--white);
+$black: var(--black);
