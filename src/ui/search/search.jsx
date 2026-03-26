@@ -1,27 +1,110 @@
+import clsx from "clsx";
 import ButtonTheme from "../button/ButtonTheme";
 import Select from "../select/Select";
-import { memo } from "react";
+import { memo, useRef, useState } from "react";
+import useClickOutside from "@/hooks/useClickOutside";
 
-const Search = ({ onSearchClick, onInputChange, value, setFilter }) => {
+const Search = ({ onInputChange, value, setFilter }) => {
+  const searchInput = useRef(null);
+  const [activeSearchInput, setIsActiveSearchInput] = useState(false);
+  const [inputLength, setInputLength] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  //кастомный хук для закрытия, когда кликнули вне области инпута
+  const rootRef = useClickOutside(() => {
+    setHasError(false);
+  });
+  // Проверяем длину
+  const checkInputLength = () => {
+    if (searchInput.current) {
+      const hasText = searchInput.current.value.trim().length > 0;
+      setInputLength(hasText);
+    }
+  };
+
+  // Проверяем на ошибку
+  const updateErrorState = () => {
+    if (searchInput.current) {
+      const inputValue = searchInput.current.value;
+      const hasOnlySpaces =
+        inputValue.trim().length === 0 && inputValue.length > 0;
+      setHasError(hasOnlySpaces);
+    }
+  };
+
+  // Фокус
+  const checkFocus = () => {
+    if (document.activeElement === searchInput.current) {
+      setIsActiveSearchInput(true);
+      checkInputLength();
+      updateErrorState();
+    }
+  };
+
+  // Потеря фокуса
+  const checkBlur = () => {
+    setIsActiveSearchInput(false);
+    updateErrorState();
+  };
+
+  // Изменение текста
+  const handleChange = (e) => {
+    onInputChange(e);
+    checkInputLength();
+    updateErrorState();
+  };
+
+  // Клик по свг
+  const handleSvgClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (searchInput.current) {
+      const inputValue = searchInput.current.value;
+      const isEmpty = inputValue.length === 0;
+      const hasOnlySpaces =
+        inputValue.trim().length === 0 && inputValue.length > 0;
+
+      if (isEmpty || hasOnlySpaces) {
+        setHasError(true);
+        return;
+      }
+
+      if (inputLength) {
+        setHasError(false);
+      }
+    }
+  };
+
   return (
-    <div className="todo-search__block">
+    <div className="todo-search__block" ref={rootRef}>
       <div className="input-svg">
         <input
-          className="input todo-search__block-input"
+          onBlur={checkBlur}
+          onFocus={checkFocus}
+          ref={searchInput}
+          className={clsx({
+            "input todo-search__block-input": true,
+            "input todo-search__block-input--error": hasError,
+          })}
           type="text"
           placeholder="Serach note..."
           value={value}
-          onChange={onInputChange} // срабатывает при вводе текста
+          onChange={handleChange}
         />
 
         <svg
-          className="todo-search__block-svg"
+          disabled="disabled"
+          className={clsx({
+            "todo-search__block-svg": true,
+            "todo-search__block-svg--disabled": !inputLength && !hasError,
+            "todo-search__block-svg--active": activeSearchInput,
+          })}
           width="21"
           height="21"
           viewBox="0 0 21 21"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          onClick={onSearchClick}
+          onMouseDown={handleSvgClick}
         >
           <path
             d="M20.7773 19.684L15.9056 14.812H15.8531C17.3547 13.0415 18.1136 10.7588 17.9709 8.44156C17.8282 6.12433 16.7951 3.95202 15.0876 2.37905C13.3801 0.806082 11.1306 -0.0456971 8.80958 0.0018919C6.48855 0.0494809 4.27583 0.992752 2.63427 2.63439C0.992706 4.27602 0.0494786 6.48885 0.00189181 8.80999C-0.045695 11.1311 0.806045 13.3808 2.37894 15.0883C3.95184 16.7958 6.12404 17.829 8.44117 17.9717C10.7583 18.1144 13.0408 17.3555 14.8113 15.8539C14.8113 15.8539 14.8113 15.8914 14.8113 15.9063L19.6831 20.7783C19.7527 20.8485 19.8356 20.9043 19.927 20.9424C20.0183 20.9804 20.1163 21 20.2152 21C20.3141 21 20.4121 20.9804 20.5034 20.9424C20.5948 20.9043 20.6777 20.8485 20.7473 20.7783C20.8242 20.7103 20.8862 20.6272 20.9296 20.5342C20.9731 20.4412 20.9969 20.3402 20.9997 20.2376C21.0025 20.135 20.9842 20.033 20.946 19.9377C20.9077 19.8425 20.8503 19.7561 20.7773 19.684ZM9.00276 16.4685C7.5204 16.4685 6.07133 16.0289 4.83879 15.2053C3.60625 14.3817 2.64561 13.2111 2.07833 11.8415C1.51106 10.4719 1.36263 8.96488 1.65183 7.51094C1.94102 6.05699 2.65485 4.72146 3.70303 3.67322C4.75122 2.62499 6.08669 1.91113 7.54057 1.62192C8.99445 1.33272 10.5014 1.48115 11.871 2.04845C13.2405 2.61575 14.411 3.57644 15.2346 4.80904C16.0581 6.04163 16.4977 7.49077 16.4977 8.9732C16.4977 9.95749 16.3038 10.9322 15.9272 11.8415C15.5505 12.7509 14.9985 13.5772 14.3025 14.2732C13.6065 14.9692 12.7803 15.5213 11.871 15.8979C10.9616 16.2746 9.98701 16.4685 9.00276 16.4685Z"
@@ -29,6 +112,11 @@ const Search = ({ onSearchClick, onInputChange, value, setFilter }) => {
           />
         </svg>
       </div>
+      {hasError && (
+        <div className="error-message">
+          Поле не может быть пустым или содержать пробелы
+        </div>
+      )}
       <Select setFilter={setFilter} />
       <ButtonTheme />
     </div>
