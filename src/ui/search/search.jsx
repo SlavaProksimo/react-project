@@ -3,18 +3,78 @@ import ButtonTheme from "../button/ButtonTheme";
 import Select from "../select/Select";
 import { memo, useRef, useState } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
+import { useForm } from "react-hook-form";
 
 const Search = ({ onInputChange, value, setFilter }) => {
   const searchInput = useRef(null);
   const [activeSearchInput, setIsActiveSearchInput] = useState(false);
-  const [inputLength, setInputLength] = useState(false);
+  //const [inputLength, setInputLength] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  const { register, watch, setValue } = useForm({
+    defaultValues: { "todo-search__block-input": value || "" },
+  });
+
+  // Отслеживаем значение
+  const myInput = watch("todo-search__block-input", "");
+
+  // Синхронизация с внешним value
+  if (value !== undefined && value !== myInput) {
+    setValue("todo-search__block-input", value);
+  }
+
+  // Отслеживаем появления фокуса
+  const checkFocus = () => {
+    setIsActiveSearchInput(true);
+  };
+
+  // Отслеживаем потерю фокуса
+  const checkBlur = () => {
+    setIsActiveSearchInput(false);
+    const hasOnlySpaces = myInput.trim().length === 0 && myInput.length > 0;
+    setHasError(hasOnlySpaces);
+  };
+
+  // Обработчик изменений
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+
+    // Проверка на ошибку при вводе
+    const hasOnlySpaces = newValue.trim().length === 0 && newValue.length > 0;
+    setHasError(hasOnlySpaces);
+
+    // Оповещаем родителя
+    if (onInputChange) {
+      onInputChange(e);
+    }
+  };
+
+  // Клик по свг
+  const handleSvgClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const hasOnlySpaces = myInput.trim().length === 0 && myInput.length > 0;
+    const isEmpty = myInput.length === 0;
+
+    if (isEmpty || hasOnlySpaces) {
+      setHasError(true);
+      return;
+    }
+
+    setHasError(false);
+    console.log("Searching for:", myInput);
+  };
+
+  // Вычесляем значение
+  const inputLength = myInput && myInput.trim().length > 0;
+
   //кастомный хук для закрытия, когда кликнули вне области инпута
   const rootRef = useClickOutside(() => {
     setHasError(false);
   });
   // Проверяем длину
-  const checkInputLength = () => {
+  /*/const checkInputLength = () => {
     if (searchInput.current) {
       const hasText = searchInput.current.value.trim().length > 0;
       setInputLength(hasText);
@@ -74,22 +134,24 @@ const Search = ({ onInputChange, value, setFilter }) => {
       }
     }
   };
-
+/*/
   return (
     <div className="todo-search__block" ref={rootRef}>
       <div className="input-svg">
         <input
-          onBlur={checkBlur}
-          onFocus={checkFocus}
-          ref={searchInput}
+          {...register("todo-search__block-input", {
+            onBlur: checkBlur,
+            onFocus: checkFocus,
+            onChange: handleChange,
+          })}
+          //ref={searchInput}
           className={clsx({
             "input todo-search__block-input": true,
             "input todo-search__block-input--error": hasError,
           })}
           type="text"
           placeholder="Serach note..."
-          value={value}
-          onChange={handleChange}
+          // value={value}
         />
 
         <svg
