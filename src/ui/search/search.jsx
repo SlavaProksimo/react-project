@@ -1,28 +1,34 @@
 import clsx from "clsx";
 import ButtonTheme from "../button/ButtonTheme";
 import Select from "../select/Select";
-import { memo, useRef, useState } from "react";
-import useClickOutside from "@/hooks/useClickOutside";
+import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import useClickOutside from "@/hooks/useClickOutside";
 const Search = ({ onInputChange, value, setFilter }) => {
-  const searchInput = useRef(null);
   const [activeSearchInput, setIsActiveSearchInput] = useState(false);
-  //const [inputLength, setInputLength] = useState(false);
-  const [hasError, setHasError] = useState(false);
 
-  const { register, watch, setValue } = useForm({
-    defaultValues: { "todo-search__block-input": value || "" },
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { search: value || "" },
+    mode: "onChange",
   });
 
   // Отслеживаем значение
-  const myInput = watch("todo-search__block-input", "");
+  const myInput = watch("search", "");
+  //  Получаем есть ли ошибка
+  const hasError = !!errors["search"];
 
+  //  Получаем сообщение об ошибке
+  const errorMessage = errors["search"]?.message;
   // Синхронизация с внешним value
   if (value !== undefined && value !== myInput) {
-    setValue("todo-search__block-input", value);
+    setValue("search", value);
   }
-
+  const rootRef = useClickOutside(() => {});
   // Отслеживаем появления фокуса
   const checkFocus = () => {
     setIsActiveSearchInput(true);
@@ -31,18 +37,10 @@ const Search = ({ onInputChange, value, setFilter }) => {
   // Отслеживаем потерю фокуса
   const checkBlur = () => {
     setIsActiveSearchInput(false);
-    const hasOnlySpaces = myInput.trim().length === 0 && myInput.length > 0;
-    setHasError(hasOnlySpaces);
   };
 
   // Обработчик изменений
   const handleChange = (e) => {
-    const newValue = e.target.value;
-
-    // Проверка на ошибку при вводе
-    const hasOnlySpaces = newValue.trim().length === 0 && newValue.length > 0;
-    setHasError(hasOnlySpaces);
-
     // Оповещаем родителя
     if (onInputChange) {
       onInputChange(e);
@@ -53,105 +51,41 @@ const Search = ({ onInputChange, value, setFilter }) => {
   const handleSvgClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
+    // Проверяем на ошибки
     const hasOnlySpaces = myInput.trim().length === 0 && myInput.length > 0;
     const isEmpty = myInput.length === 0;
 
     if (isEmpty || hasOnlySpaces) {
-      setHasError(true);
       return;
     }
-
-    setHasError(false);
-    console.log("Searching for:", myInput);
   };
 
   // Вычесляем значение
   const inputLength = myInput && myInput.trim().length > 0;
 
-  //кастомный хук для закрытия, когда кликнули вне области инпута
-  const rootRef = useClickOutside(() => {
-    setHasError(false);
-  });
-  // Проверяем длину
-  /*/const checkInputLength = () => {
-    if (searchInput.current) {
-      const hasText = searchInput.current.value.trim().length > 0;
-      setInputLength(hasText);
-    }
-  };
-
-  // Проверяем на ошибку
-  const updateErrorState = () => {
-    if (searchInput.current) {
-      const inputValue = searchInput.current.value;
-      const hasOnlySpaces =
-        inputValue.trim().length === 0 && inputValue.length > 0;
-      setHasError(hasOnlySpaces);
-    }
-  };
-
-  // Фокус
-  const checkFocus = () => {
-    if (document.activeElement === searchInput.current) {
-      setIsActiveSearchInput(true);
-      checkInputLength();
-      updateErrorState();
-    }
-  };
-
-  // Потеря фокуса
-  const checkBlur = () => {
-    setIsActiveSearchInput(false);
-    updateErrorState();
-  };
-
-  // Изменение текста
-  const handleChange = (e) => {
-    onInputChange(e);
-    checkInputLength();
-    updateErrorState();
-  };
-
-  // Клик по свг
-  const handleSvgClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (searchInput.current) {
-      const inputValue = searchInput.current.value;
-      const isEmpty = inputValue.length === 0;
-      const hasOnlySpaces =
-        inputValue.trim().length === 0 && inputValue.length > 0;
-
-      if (isEmpty || hasOnlySpaces) {
-        setHasError(true);
-        return;
-      }
-
-      if (inputLength) {
-        setHasError(false);
-      }
-    }
-  };
-/*/
   return (
     <div className="todo-search__block" ref={rootRef}>
       <div className="input-svg">
         <input
-          {...register("todo-search__block-input", {
+          {...register("search", {
             onBlur: checkBlur,
             onFocus: checkFocus,
             onChange: handleChange,
+            validate: {
+              notEmptyOrSpaces: (value) => {
+                if (!value || value.trim().length === 0) {
+                  return "Поле не может быть пустым или содержать только пробелы";
+                }
+                return true;
+              },
+            },
           })}
-          //ref={searchInput}
           className={clsx({
             "input todo-search__block-input": true,
             "input todo-search__block-input--error": hasError,
           })}
           type="text"
           placeholder="Serach note..."
-          // value={value}
         />
 
         <svg
@@ -174,10 +108,8 @@ const Search = ({ onInputChange, value, setFilter }) => {
           />
         </svg>
       </div>
-      {hasError && (
-        <div className="error-message">
-          Поле не может быть пустым или содержать пробелы
-        </div>
+      {hasError && errorMessage && (
+        <div className="error-message">{errorMessage}</div>
       )}
       <Select setFilter={setFilter} />
       <ButtonTheme />
