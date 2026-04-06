@@ -1,5 +1,7 @@
 @use "../../scss/variables" as *;
+
 .todo-search__block {
+	position: relative;
 	display: flex;
 	gap: 16px;
 
@@ -7,6 +9,18 @@
 		padding-left: 16px;
 		width: 595px;
 		color: var(--inputText);
+
+		&--error {
+			border: 1px solid $error !important;
+
+			&:focus {
+				-webkit-box-shadow: -1px 0px 15px 8px rgba(214, 8, 8, 0.42);
+				-moz-box-shadow: -1px 0px 15px 8px rgba(226, 70, 31, 0.42);
+				box-shadow: -1px 0px 15px 8px rgba(204, 21, 8, 0.42);
+				border: 2px solid $primary;
+				outline: none;
+			}
+		}
 	}
 
 	&-svg {
@@ -15,8 +29,41 @@
 		top: 8.5px;
 		cursor: pointer;
 		filter: var(--filter);
+
+		path {
+			fill: $primary;
+			transition: fill 0.2s ease;
+		}
+
+		&--disabled {
+			cursor: not-allowed;
+			transform: none !important;
+			opacity: 0.5;
+		}
+
+		&--active {
+			path {
+				fill: $primary;
+			}
+		}
+
+		&--error {
+			path {
+				fill: $error !important;
+				cursor: not-allowed;
+			}
+		}
+
+		&:active {
+			transform: scale(0.8);
+		}
 	}
-	&-svg:active {
-		transform: scale(0.8);
-	}
+}
+
+.error-message {
+	position: absolute;
+	bottom: -25px;
+	left: 0;
+	color: $error;
+	font-size: 12px;
 }
