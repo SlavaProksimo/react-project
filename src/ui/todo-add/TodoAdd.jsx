@@ -23,17 +23,16 @@ const TodoAdd = ({ close, onApply, open }) => {
 
   // Обработчик отправки формы
   const onSubmit = (data) => {
-    if (data.text && data.text.trim().length > 0) {
-      onApply(data.text);
-      reset(); // Очищаем форму после добавления
-      close(); // Закрываем модалку
-    }
+    if (data.text && data.text.trim().length > 0) return;
+    onApply(data.text);
+    reset(); // Очищаем форму после добавления
+    close(); // Закрываем модалку
   };
 
   if (!open) return null;
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="overlay"></div>
       <div className="todo-add__general-box" ref={modalRef}>
         <div className="todo-add__box">
@@ -61,19 +60,13 @@ const TodoAdd = ({ close, onApply, open }) => {
             >
               Cancel
             </button>
-            <form>
-              <button
-                className="todo-add__btn btn-right"
-                type="submit"
-                onClick={handleSubmit(onSubmit)}
-              >
-                Apply
-              </button>
-            </form>
+            <button className="todo-add__btn btn-right" type="submit">
+              Apply
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 };
 

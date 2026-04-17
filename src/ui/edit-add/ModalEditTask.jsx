@@ -32,7 +32,7 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
   if (!open) return null;
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="overlay"></div>
       <div className="todo-add__general-box" ref={modalRef}>
         <div className="todo-add__box">
@@ -59,19 +59,14 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
             >
               Cancel
             </button>
-            <form>
-              <button
-                className="todo-add__btn btn-right"
-                type="button"
-                onClick={handleSubmit(onSubmit)}
-              >
-                Save
-              </button>
-            </form>
+
+            <button className="todo-add__btn btn-right" type="submit">
+              Save
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 };
 
