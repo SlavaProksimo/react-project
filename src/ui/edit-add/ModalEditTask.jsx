@@ -1,14 +1,22 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import { useTextForm } from "@/hooks/useSearchForm";
+import FormInput from "../form-input/FormInput";
+import { useForm, FormProvider } from "react-hook-form";
 import clsx from "clsx";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { textSchema } from "@/hooks/useSearchForm";
 
 const ModalEditTask = ({ close, onApply, open, initialValue }) => {
+  const methods = useForm({
+    resolver: zodResolver(textSchema),
+    defaultValues: { text: initialValue || "" },
+  });
+
   const {
     handleSubmit,
     reset,
-    register,
     formState: { errors },
-  } = useTextForm({ text: initialValue || "" });
+  } = methods;
 
   const hasErrorTodoText = !!errors["text"];
   const todoErrorMessage = errors["text"]?.message;
@@ -32,41 +40,42 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
   if (!open) return null;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="overlay"></div>
-      <div className="todo-add__general-box" ref={modalRef}>
-        <div className="todo-add__box">
-          <h2 className="todo-add__title">Edit Note</h2>
-          <input
-            autoFocus={open}
-            className={clsx({
-              "todo-add__input": true,
-              "todo-add__input--error": hasErrorTodoText,
-            })}
-            placeholder="Edit your note..."
-            {...register("text")}
-          />
-          {todoErrorMessage && (
-            <div className="error-message todo__error-message">
-              {todoErrorMessage}
-            </div>
-          )}
-          <div className="todo-add__btn-box">
-            <button
-              className="todo-add__btn btn-left"
-              type="button"
-              onClick={close}
-            >
-              Cancel
-            </button>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="overlay"></div>
+        <div className="todo-add__general-box" ref={modalRef}>
+          <div className="todo-add__box">
+            <h2 className="todo-add__title">Edit Note</h2>
+            <FormInput
+              name="text"
+              className={clsx({
+                "todo-add__input": true,
+                "todo-add__input--error": hasErrorTodoText,
+              })}
+              placeholder="Edit your note..."
+            />
+            {todoErrorMessage && (
+              <div className="error-message todo__error-message">
+                {todoErrorMessage}
+              </div>
+            )}
+            <div className="todo-add__btn-box">
+              <button
+                className="todo-add__btn btn-left"
+                type="button"
+                onClick={close}
+              >
+                Cancel
+              </button>
 
-            <button className="todo-add__btn btn-right" type="submit">
-              Save
-            </button>
+              <button className="todo-add__btn btn-right" type="submit">
+                Save
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </FormProvider>
   );
 };
 
