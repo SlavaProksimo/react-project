@@ -1,33 +1,27 @@
 import clsx from "clsx";
 import ButtonTheme from "../button/ButtonTheme";
 import Select from "../select/Select";
-import { memo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { memo, useState, useEffect } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
-const Search = ({ onInputChange, value, setFilter }) => {
+import { useSearchForm } from "@/hooks/useSearchForm";
+
+const Search = ({ onInputChange, setFilter }) => {
   const [activeSearchInput, setIsActiveSearchInput] = useState(false);
 
   const {
     register,
     watch,
-    setValue,
     formState: { errors },
-  } = useForm({
-    defaultValues: { search: value || "" },
-    mode: "onChange",
-  });
+  } = useSearchForm({ text: "" });
 
   // Отслеживаем значение
-  const myInput = watch("search", "");
+  const myInput = watch("text", "");
   //  Получаем есть ли ошибка
-  const hasError = !!errors["search"];
+  const hasError = !!errors["text"];
 
   //  Получаем сообщение об ошибке
-  const errorMessage = errors["search"]?.message;
-  // Синхронизация с внешним value
-  if (value !== undefined && value !== myInput) {
-    setValue("search", value);
-  }
+  const errorMessage = errors["text"]?.message;
+
   const rootRef = useClickOutside(() => {});
   // Отслеживаем появления фокуса
   const checkFocus = () => {
@@ -37,14 +31,6 @@ const Search = ({ onInputChange, value, setFilter }) => {
   // Отслеживаем потерю фокуса
   const checkBlur = () => {
     setIsActiveSearchInput(false);
-  };
-
-  // Обработчик изменений
-  const handleChange = (e) => {
-    // Оповещаем родителя
-    if (onInputChange) {
-      onInputChange(e);
-    }
   };
 
   // Клик по свг
@@ -62,24 +48,25 @@ const Search = ({ onInputChange, value, setFilter }) => {
 
   // Вычесляем значение
   const inputLength = myInput && myInput.trim().length > 0;
+  // отправляем значение родителю при каждом изменении
+  useEffect(() => {
+    if (onInputChange) {
+      const event = {
+        target: {
+          value: myInput,
+        },
+      };
+      onInputChange(event);
+    }
+  }, [myInput, onInputChange]);
 
   return (
     <div className="todo-search__block" ref={rootRef}>
       <div className="input-svg">
         <input
-          {...register("search", {
-            onBlur: checkBlur,
-            onFocus: checkFocus,
-            onChange: handleChange,
-            validate: {
-              notEmptyOrSpaces: (value) => {
-                if (!value || value.trim().length === 0) {
-                  return "Поле не может быть пустым или содержать только пробелы";
-                }
-                return true;
-              },
-            },
-          })}
+          onBlur={checkBlur}
+          onFocus={checkFocus}
+          {...register("text")}
           className={clsx({
             "input todo-search__block-input": true,
             "input todo-search__block-input--error": hasError,

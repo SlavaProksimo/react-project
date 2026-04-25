@@ -34,6 +34,18 @@
 	margin-bottom: 128px;
 	color: var(--inputText);
 	border: 2px solid var(--inputText);
+
+	&--error {
+		border: 1px solid $error !important;
+
+		&:focus {
+			-webkit-box-shadow: -1px 0px 15px 8px rgba(214, 8, 8, 0.42);
+			-moz-box-shadow: -1px 0px 15px 8px rgba(226, 70, 31, 0.42);
+			box-shadow: -1px 0px 15px 8px rgba(204, 21, 8, 0.42);
+			border: 2px solid $primary;
+			outline: none;
+		}
+	}
 }
 .todo-add__btn-box {
 	display: flex;
@@ -55,4 +67,9 @@
 
 .btn-right {
 	color: $btnCol;
+}
+.todo__error-message {
+	top: 120px;
+	left: 56px;
+	height: 10px;
 }
