@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ButtonAddTodo from "@/ui/button/ButtonAddTodo";
 import NewTasks from "@/ui/new-tasks/NewTasks";
-import Search from "@/ui/search/Search";
+import Search from "@/ui/search/search";
 import NotFound from "@/ui/not-found/NotFound";
 import { useTodos } from "@/hooks/use-todos";
 import ModalEditTask from "@/ui/edit-add/ModalEditTask";
