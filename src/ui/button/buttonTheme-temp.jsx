@@ -2,7 +2,7 @@ import { useTheme } from "@/context/ThemeProvider";
 import { memo } from "react";
 const ButtonTheme = () => {
   const { theme, toggleTheme } = useTheme();
-  const test = 10;
+
   return (
     <button
       className="btn btn-change__background"
