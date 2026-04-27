@@ -1,12 +1,11 @@
 import { useState } from "react";
 import ButtonAddTodo from "@/ui/button/ButtonAddTodo";
-import todoAdd from "@/ui/todo-add/todoadd";
 import NewTasks from "@/ui/new-tasks/NewTasks";
 import Search from "@/ui/search/Search";
 import NotFound from "@/ui/not-found/NotFound";
 import { useTodos } from "@/hooks/use-todos";
 import ModalEditTask from "@/ui/edit-add/ModalEditTask";
-
+import TodoAdd from "@/ui/todo-add/TodoAdd";
 const HomePage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -64,7 +63,7 @@ const HomePage = () => {
       </div>
 
       {isAddModalOpen && (
-        <todoAdd
+        <TodoAdd
           close={closeAddModal}
           onApply={addNewTask}
           open={isAddModalOpen}
