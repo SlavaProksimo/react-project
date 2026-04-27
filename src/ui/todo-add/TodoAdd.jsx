@@ -1,53 +1,79 @@
-import { memo, useRef, useEffect } from "react";
+import { memo } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { textSchema } from "@/hooks/useSearchForm";
 import useClickOutside from "@/hooks/useClickOutside";
+import FormInput from "../form-input/FormInput";
+import clsx from "clsx";
+
 const TodoAdd = ({ close, onApply, open }) => {
-  //Автофокус с помощью useRef
-  const inputRef = useRef(null);
-  //кастомный хук
+  const methods = useForm({
+    resolver: zodResolver(textSchema),
+    defaultValues: { text: "" },
+    mode: "onChange",
+  });
+
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  const hasErrorTodoText = !!errors.text;
+  const todoErrorMessage = errors.text?.message;
+
+  // кастомный хук
   const modalRef = useClickOutside(() => {
     if (open) {
       close();
     }
   });
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [open]);
+  // Обработчик отправки формы
+  const onSubmit = (data) => {
+    if (!data.text || data.text.trim().length === 0) return;
+    onApply(data.text);
+    reset(); //  Очищаем форму
+    close(); // Закрываем модалку
+  };
 
   if (!open) return null;
 
   return (
-    <>
-      <div className="overlay"></div>
-      <div className="todo-add__general-box" ref={modalRef}>
-        <div className="todo-add__box">
-          <h2 className="todo-add__title">New Note</h2>
-          <input
-            className="todo-add__input"
-            placeholder="Input your note..."
-            ref={inputRef}
-          />
-          <div className="todo-add__btn-box">
-            <button
-              className="todo-add__btn btn-left"
-              type="button"
-              onClick={close}
-            >
-              Cancel
-            </button>
-            <button
-              className="todo-add__btn btn-right"
-              type="button"
-              onClick={() => onApply(inputRef.current.value)}
-            >
-              Apply
-            </button>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="overlay"></div>
+        <div className="todo-add__general-box" ref={modalRef}>
+          <div className="todo-add__box">
+            <h2 className="todo-add__title">New Note</h2>
+            <FormInput
+              name="text"
+              placeholder="Input your note..."
+              className={clsx("todo-add__input", {
+                "todo-add__input--error": hasErrorTodoText,
+              })}
+            />
+
+            {todoErrorMessage && (
+              <div className="error-message todo__error-message">
+                {todoErrorMessage}
+              </div>
+            )}
+            <div className="todo-add__btn-box">
+              <button
+                className="todo-add__btn btn-left"
+                type="button"
+                onClick={close}
+              >
+                Cancel
+              </button>
+              <button className="todo-add__btn btn-right" type="submit">
+                Apply
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </>
+      </form>
+    </FormProvider>
   );
 };
 

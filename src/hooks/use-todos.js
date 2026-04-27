@@ -66,8 +66,7 @@ export const useTodos = ({
     },
     [setEditingTask, setIsEditModalOpen],
   );
-  const handleInputChange = (event) => {
-    const value = event.target.value;
+  const handleInputChange = (value) => {
     setSearchTask(value);
   };
   //поиск задач

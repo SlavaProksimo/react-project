@@ -1,4 +1,10 @@
 @use "./_variables" as *;
+* {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
 html,
 body,
 #root {

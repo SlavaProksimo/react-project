@@ -47,7 +47,6 @@ const HomePage = () => {
           <Search
             value={searchTask}
             onInputChange={handleInputChange}
-            tasks={tasks}
             setFilter={setFilter}
           />
           {showNotFound && <NotFound />}
