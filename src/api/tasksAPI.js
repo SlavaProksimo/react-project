@@ -1,5 +1,6 @@
 // Работа с сервером
-const URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL;
+const TASKS_URL = `${BASE_URL}/tasks`;
 
 const headers = {
   "Content-Type": "application/json",
@@ -8,18 +9,12 @@ const headers = {
 const tasksAPI = {
   // Получаем все задачи
   getAll: async () => {
-    // return fetch(URL).then((response) => response.json());
-    const response = await fetch(URL);
+    const response = await fetch(TASKS_URL);
     return response.json();
   },
   // Добавление задач на сервер
   add: async (task) => {
-    // return fetch(URL, {
-    //   method: "POST",
-    //   headers,
-    //   body: JSON.stringify(task),
-    // }).then((response) => response.json());
-    const response = await fetch(URL, {
+    const response = await fetch(TASKS_URL, {
       method: "POST",
       headers,
       body: JSON.stringify(task),
@@ -28,27 +23,30 @@ const tasksAPI = {
   },
   // Удаление
   delete: async (id) => {
-    // return fetch(`${URL}/${id}`, {
-    //   method: "DELETE",
-    // });
-    await fetch(`${URL}/${id}`, {
+    await fetch(`${TASKS_URL}/${id}`, {
       method: "DELETE",
     });
   },
   // изменение состояние таски
   toggleComplete: async (id, newIsDoneValue) => {
-    // return fetch(`${URL}/${id}`, {
-    //   method: "PATCH",
-    //   headers,
-    //   body: JSON.stringify({ isDone: newIsDoneValue }),
-    // });
-    const response = await fetch(`${URL}/${id}`, {
+    const response = await fetch(`${TASKS_URL}/${id}`, {
       method: "PATCH",
       headers,
       body: JSON.stringify({ isDone: newIsDoneValue }),
     });
     return response.json();
   },
+  // Редактирование таски
+  edit: async (id, newTitle) => {
+    const response = await fetch(`${TASKS_URL}/${id}`, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ title: newTitle }),
+    });
+
+    return response.json();
+  },
 };
 
 export default tasksAPI;
+// npm run server

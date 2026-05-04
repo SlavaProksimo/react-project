@@ -36,11 +36,13 @@ export const useTodos = ({
   );
   // Редактируем задачу
   const updateTask = useCallback(
-    (taskId, newTitle) => {
+    async (taskId, newTitle) => {
       if (newTitle?.trim().length > 0) {
+        // сохраняем задачу после перезагрузки стр.
+        const updatedTasks = await tasksAPI.edit(taskId, newTitle.trim());
         setTasks((prev) =>
           prev.map((task) =>
-            task.id === taskId ? { ...task, title: newTitle.trim() } : task,
+            task.id === taskId ? { ...task, title: updatedTasks.title } : task,
           ),
         );
         closeEditModal();

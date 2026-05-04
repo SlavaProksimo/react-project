@@ -11,6 +11,7 @@ const TodoItem = (props) => {
       e.stopPropagation();
       onEditClick(id, title);
     },
+
     [title, id, onEditClick],
   );
   //Удалить задачу
@@ -23,7 +24,8 @@ const TodoItem = (props) => {
   const handleCheckboxChange = useCallback(
     (event) => {
       const newIsDoneValue = event.target.checked;
-      tasksAPI.toggleComplete(id, isDone).then(() => {
+
+      tasksAPI.toggleComplete(id, newIsDoneValue).then(() => {
         setTasks((prev) =>
           prev.map((task) =>
             task.id === id ? { ...task, isDone: newIsDoneValue } : task,
