@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import clsx from "clsx";
+import tasksAPI from "@/api/tasksAPI";
 
 const TodoItem = (props) => {
   const { title = "", isDone, setTasks, id, onEditClick } = props;
@@ -10,22 +11,29 @@ const TodoItem = (props) => {
       e.stopPropagation();
       onEditClick(id, title);
     },
+
     [title, id, onEditClick],
   );
   //Удалить задачу
   const onClickDelete = useCallback(() => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+    tasksAPI.delete(id).then(() => {
+      setTasks((prev) => prev.filter((t) => t.id !== id));
+    });
   }, [setTasks, id]);
   //отмечаем галочкой
   const handleCheckboxChange = useCallback(
     (event) => {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === id ? { ...task, isDone: event.target.checked } : task,
-        ),
-      );
+      const newIsDoneValue = event.target.checked;
+
+      tasksAPI.toggleComplete(id, newIsDoneValue).then(() => {
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === id ? { ...task, isDone: newIsDoneValue } : task,
+          ),
+        );
+      });
     },
-    [setTasks, id],
+    [id, setTasks],
   );
 
   return (

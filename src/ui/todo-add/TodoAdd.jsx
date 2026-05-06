@@ -32,7 +32,7 @@ const TodoAdd = ({ close, onApply, open }) => {
   const onSubmit = (data) => {
     if (!data.text || data.text.trim().length === 0) return;
     onApply(data.text);
-    reset(); //  Очищаем форму
+    // reset(); //  Очищаем форму
     close(); // Закрываем модалку
   };
 

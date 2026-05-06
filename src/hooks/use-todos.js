@@ -1,16 +1,5 @@
+import tasksAPI from "@/api/tasksAPI";
 import { useCallback, useEffect, useMemo, useState } from "react";
-const getDataFromLocalStorage = () => {
-  try {
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-      return JSON.parse(savedTasks);
-    }
-    return [];
-  } catch (error) {
-    console.error("Ошибка LocalStorage");
-    return [];
-  }
-};
 
 export const useTodos = ({
   closeAddModal,
@@ -19,38 +8,41 @@ export const useTodos = ({
   setEditingTask,
 }) => {
   //Сохраняем тудушки после перезагрузки страницы
-  const [tasks, setTasks] = useState(getDataFromLocalStorage());
+  const [tasks, setTasks] = useState([]);
 
   const [searchTask, setSearchTask] = useState("");
   const [filter, setFilter] = useState("All");
 
-  //Сохраняем тудушки после перезагрузки страницы
+  //Сохраняем тудушки на сервере, после перезагрузки страницы
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    tasksAPI.getAll().then(setTasks);
+  }, []);
 
-  //Проверка для кнопки Apply, чтобы закрывать модалку только если было что-то введено
+  // Добавление задачи
   const addNewTask = useCallback(
     (title) => {
       if (title.trim().length > 0) {
         const newTask = {
-          id: crypto.randomUUID(),
           title: title.trim(),
           isDone: false,
         };
-        setTasks((prev) => [...prev, newTask]);
-        closeAddModal();
+        tasksAPI.add(newTask).then((addedTask) => {
+          setTasks((prev) => [...prev, addedTask]);
+          closeAddModal();
+        });
       }
     },
     [closeAddModal],
   );
   // Редактируем задачу
   const updateTask = useCallback(
-    (taskId, newTitle) => {
+    async (taskId, newTitle) => {
       if (newTitle?.trim().length > 0) {
+        // сохраняем задачу после перезагрузки стр.
+        const updatedTasks = await tasksAPI.edit(taskId, newTitle.trim());
         setTasks((prev) =>
           prev.map((task) =>
-            task.id === taskId ? { ...task, title: newTitle.trim() } : task,
+            task.id === taskId ? { ...task, title: updatedTasks.title } : task,
           ),
         );
         closeEditModal();
