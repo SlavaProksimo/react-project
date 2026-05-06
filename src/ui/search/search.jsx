@@ -6,6 +6,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import { useSearchForm } from "@/hooks/useSearchForm";
 import FormInput from "../form-input/FormInput";
 import { FormProvider } from "react-hook-form";
+import styles from "./Search.module.scss";
 
 const Search = ({ onInputChange, setFilter }) => {
   const formMethods = useSearchForm({ text: "" });
@@ -58,21 +59,21 @@ const Search = ({ onInputChange, setFilter }) => {
 
   return (
     <FormProvider {...formMethods}>
-      <div className="todo-search__block" ref={rootRef}>
-        <div className="input-svg">
+      <div className={styles.todoSearchBlock} ref={rootRef}>
+        <div className={styles.inputSvg}>
           <FormInput
             name="text"
             placeholder="Search note..."
-            className={clsx("input todo-search__block-input", {
-              "todo-search__block-input--error": hasError,
+            className={clsx(styles.input, {
+              [styles.inputError]: hasError,
             })}
           />
           <svg
             disabled="disabled"
-            className={clsx({
-              "todo-search__block-svg": true,
-              "todo-search__block-svg--disabled": !inputLength && !hasError,
-              "todo-search__block-svg--active": activeSearchInput,
+            className={clsx(styles.svg, {
+              [styles.svgDisabled]: !inputLength && !hasError,
+              [styles.svgActive]: activeSearchInput,
+              [styles.svgError]: hasError,
             })}
             width="21"
             height="21"
@@ -88,7 +89,7 @@ const Search = ({ onInputChange, setFilter }) => {
           </svg>
         </div>
         {hasError && errorMessage && (
-          <div className="error-message">{errorMessage}</div>
+          <div className={styles.errorMessage}>{errorMessage}</div>
         )}
         <Select setFilter={setFilter} />
         <ButtonTheme />

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import clsx from "clsx";
 import tasksAPI from "@/api/tasksAPI";
-
+import styles from "./TodoItem.module.scss";
 const TodoItem = (props) => {
   const { title = "", isDone, setTasks, id, onEditClick } = props;
 
@@ -46,9 +46,8 @@ const TodoItem = (props) => {
           checked={isDone}
         />
         <span
-          className={clsx({
-            "todo-list__span": true,
-            "todo-title--completed": isDone,
+          className={clsx(styles.span, {
+            [styles.completed]: isDone,
           })}
         >
           {title}
@@ -56,7 +55,7 @@ const TodoItem = (props) => {
       </div>
       <div className="li-interaction">
         <button
-          className="li-interaction__todo-editing"
+          className={styles.btnEdit}
           type="button"
           onClick={handleEditClick}
         >
@@ -77,7 +76,7 @@ const TodoItem = (props) => {
           </svg>
         </button>
         <button
-          className="li-interaction__todo-delete"
+          className={styles.btnDelete}
           type="button"
           onClick={onClickDelete}
         >

@@ -1,0 +1,15 @@
+.notFound {
+	&Img {
+		display: flex;
+		justify-content: center;
+		padding-top: 30px;
+	}
+}
+
+.notFound {
+	&Text {
+		display: flex;
+		justify-content: center;
+		padding-top: 20px;
+	}
+}
