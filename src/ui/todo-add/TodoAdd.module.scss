@@ -31,7 +31,7 @@
 .input {
 	padding-left: 10px;
 	width: 440px;
-	margin-bottom: 128px;
+	// margin-bottom: 128px;
 	color: var(--inputText);
 	border: 2px solid var(--inputText);
 
@@ -50,6 +50,7 @@
 .btnBox {
 	display: flex;
 	justify-content: space-between;
+	padding-top: 100px;
 }
 
 .btnLeft {
@@ -72,7 +73,5 @@
 	}
 }
 .TodoErrorMessage {
-	top: 120px;
-	left: 56px;
-	height: 10px;
+	color: red;
 }
