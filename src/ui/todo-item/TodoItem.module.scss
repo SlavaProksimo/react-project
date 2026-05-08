@@ -1,0 +1,31 @@
+@use "../../scss/variables" as *;
+
+.btnEdit {
+	background-color: $white;
+	&:active {
+		transform: scale(0.85);
+		path {
+			stroke: $primary;
+		}
+	}
+}
+
+.btnDelete {
+	background-color: $white;
+	&:active {
+		transform: scale(0.85);
+		path {
+			stroke: red;
+		}
+	}
+}
+
+.span {
+	text-decoration: none;
+	color: $black;
+}
+
+.completed {
+	text-decoration: line-through;
+	color: rgb(153 147 147 / 50%);
+}

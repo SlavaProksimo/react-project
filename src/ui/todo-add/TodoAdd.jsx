@@ -5,6 +5,7 @@ import { textSchema } from "@/hooks/useSearchForm";
 import useClickOutside from "@/hooks/useClickOutside";
 import FormInput from "../form-input/FormInput";
 import clsx from "clsx";
+import styles from "./TodoAdd.module.scss";
 
 const TodoAdd = ({ close, onApply, open }) => {
   const methods = useForm({
@@ -41,32 +42,26 @@ const TodoAdd = ({ close, onApply, open }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="overlay"></div>
-        <div className="todo-add__general-box" ref={modalRef}>
+        <div className={styles.overlay}></div>
+        <div className={styles.todoAddBox} ref={modalRef}>
           <div className="todo-add__box">
-            <h2 className="todo-add__title">New Note</h2>
+            <h2 className={styles.todoAddTitle}>New Note</h2>
             <FormInput
               name="text"
               placeholder="Input your note..."
-              className={clsx("todo-add__input", {
-                "todo-add__input--error": hasErrorTodoText,
+              className={clsx(styles.input, {
+                [styles.inputError]: hasErrorTodoText,
               })}
             />
 
             {todoErrorMessage && (
-              <div className="error-message todo__error-message">
-                {todoErrorMessage}
-              </div>
+              <div className={styles.TodoErrorMessage}>{todoErrorMessage}</div>
             )}
-            <div className="todo-add__btn-box">
-              <button
-                className="todo-add__btn btn-left"
-                type="button"
-                onClick={close}
-              >
+            <div className={styles.btnBox}>
+              <button className={styles.btnLeft} type="button" onClick={close}>
                 Cancel
               </button>
-              <button className="todo-add__btn btn-right" type="submit">
+              <button className={styles.btnRight} type="submit">
                 Apply
               </button>
             </div>

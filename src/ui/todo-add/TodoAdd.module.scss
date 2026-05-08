@@ -1,0 +1,76 @@
+@use "../../scss/variables" as *;
+.overlay {
+	position: fixed;
+	background-color: rgba(61, 61, 61, 0.795);
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.todoAddBox {
+	background-color: $white;
+	width: 550px;
+	height: 307px;
+	display: flex;
+	justify-content: center;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 16px;
+	z-index: 2;
+	border: 1px solid var(--borderWhite);
+}
+.todoAddTitle {
+	display: flex;
+	justify-content: center;
+	padding: 18px 0px 25px 0px;
+}
+
+.input {
+	padding-left: 10px;
+	width: 440px;
+	color: var(--inputText);
+	border: 2px solid var(--inputText);
+
+	&Error {
+		border: 1px solid $error;
+
+		&:focus {
+			-webkit-box-shadow: -1px 0px 15px 8px rgba(214, 8, 8, 0.42);
+			-moz-box-shadow: -1px 0px 15px 8px rgba(226, 70, 31, 0.42);
+			box-shadow: -1px 0px 15px 8px rgba(204, 21, 8, 0.42);
+			border: 2px solid $primary;
+			outline: none;
+		}
+	}
+}
+.btnBox {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 100px;
+}
+
+.btnLeft {
+	border: 1px solid $primary;
+	background-color: $white;
+	color: $primary;
+	width: 110px;
+	height: 38px;
+	&:active {
+		transform: scale(0.9);
+	}
+}
+
+.btnRight {
+	color: $btnCol;
+	width: 110px;
+	height: 38px;
+	&:active {
+		transform: scale(0.9);
+	}
+}
+.TodoErrorMessage {
+	color: red;
+}

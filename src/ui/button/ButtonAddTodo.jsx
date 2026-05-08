@@ -1,4 +1,5 @@
 import { memo, useCallback } from "react";
+import styles from "./ButtonAddTodo.module.scss";
 const ButtonAddTodo = ({ setIsAddModalOpen }) => {
   const onClickAddTodo = useCallback(
     (e) => {
@@ -8,7 +9,7 @@ const ButtonAddTodo = ({ setIsAddModalOpen }) => {
     [setIsAddModalOpen],
   );
   return (
-    <button className="btn btn-addTodo" type="button" onClick={onClickAddTodo}>
+    <button className={styles.btn} type="button" onClick={onClickAddTodo}>
       <svg
         width="24"
         height="24"

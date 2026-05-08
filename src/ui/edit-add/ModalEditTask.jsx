@@ -1,17 +1,16 @@
 import useClickOutside from "@/hooks/useClickOutside";
-import { useTextForm } from "@/hooks/useSearchForm";
 import FormInput from "../form-input/FormInput";
 import { useForm, FormProvider } from "react-hook-form";
 import clsx from "clsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { textSchema } from "@/hooks/useSearchForm";
-
-const ModalEditTask = ({ close, onApply, open, initialValue }) => {
+import styles from "./EditAdd.module.scss";
+const ModalEditTask = ({ close, onApply, open }) => {
   const methods = useForm({
     resolver: zodResolver(textSchema),
-    defaultValues: { text: initialValue || "" },
+    defaultValues: { text: "" },
+    mode: "onChange",
   });
-
   const {
     handleSubmit,
     reset,
@@ -42,33 +41,26 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="overlay"></div>
-        <div className="todo-add__general-box" ref={modalRef}>
+        <div className={styles.overlay}></div>
+        <div className={styles.todoAddBox} ref={modalRef}>
           <div className="todo-add__box">
-            <h2 className="todo-add__title">Edit Note</h2>
+            <h2 className={styles.todoAddTitle}>Edit Note</h2>
             <FormInput
               name="text"
-              className={clsx({
-                "todo-add__input": true,
-                "todo-add__input--error": hasErrorTodoText,
+              className={clsx(styles.input, {
+                [styles.inputError]: hasErrorTodoText,
               })}
               placeholder="Edit your note..."
             />
             {todoErrorMessage && (
-              <div className="error-message todo__error-message">
-                {todoErrorMessage}
-              </div>
+              <div className={styles.TodoErrorMessage}>{todoErrorMessage}</div>
             )}
-            <div className="todo-add__btn-box">
-              <button
-                className="todo-add__btn btn-left"
-                type="button"
-                onClick={close}
-              >
+            <div className={styles.btnBox}>
+              <button className={styles.btnLeft} type="button" onClick={close}>
                 Cancel
               </button>
 
-              <button className="todo-add__btn btn-right" type="submit">
+              <button className={styles.btnRight} type="submit">
                 Save
               </button>
             </div>

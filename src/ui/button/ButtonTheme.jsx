@@ -1,14 +1,11 @@
 import { useTheme } from "@/context/ThemeProvider";
 import { memo } from "react";
+import styles from "./ButtonTheme.module.scss";
 const ButtonTheme = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button
-      className="btn btn-change__background"
-      type="button"
-      onClick={toggleTheme}
-    >
+    <button className={styles.btn} type="button" onClick={toggleTheme}>
       {theme === "dark" ? (
         <svg
           width="22"

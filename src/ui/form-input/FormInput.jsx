@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import clsx from "clsx";
-
+import styles from "../search/Search.module.scss";
 const FormInput = ({
   name = "text",
   placeholder = "Input...",
@@ -29,8 +29,8 @@ const FormInput = ({
             }}
             onFocus={onFocus}
             placeholder={placeholder}
-            className={clsx(className, {
-              "input--error": hasError,
+            className={clsx(styles.input, className, {
+              [styles.inputError]: hasError,
             })}
           />
         )}

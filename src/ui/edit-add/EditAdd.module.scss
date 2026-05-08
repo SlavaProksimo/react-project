@@ -8,7 +8,7 @@
 	z-index: 1;
 }
 
-.todo-add__general-box {
+.todoAddBox {
 	background-color: $white;
 	width: 550px;
 	height: 307px;
@@ -22,21 +22,20 @@
 	z-index: 2;
 	border: 1px solid var(--borderWhite);
 }
-.todo-add__title {
+.todoAddTitle {
 	display: flex;
 	justify-content: center;
 	padding: 18px 0px 25px 0px;
 }
 
-.todo-add__input {
+.input {
 	padding-left: 10px;
 	width: 440px;
-	margin-bottom: 128px;
 	color: var(--inputText);
 	border: 2px solid var(--inputText);
 
-	&--error {
-		border: 1px solid $error !important;
+	&Error {
+		border: 1px solid $error;
 
 		&:focus {
 			-webkit-box-shadow: -1px 0px 15px 8px rgba(214, 8, 8, 0.42);
@@ -47,11 +46,16 @@
 		}
 	}
 }
-.todo-add__btn-box {
+.btnBox {
 	display: flex;
 	justify-content: space-between;
+	padding-top: 100px;
 }
-.todo-add__btn {
+
+.btnLeft {
+	border: 1px solid $primary;
+	background-color: $white;
+	color: $primary;
 	width: 110px;
 	height: 38px;
 	&:active {
@@ -59,17 +63,14 @@
 	}
 }
 
-.btn-left {
-	border: 1px solid $primary;
-	background-color: $white;
-	color: $primary;
-}
-
-.btn-right {
+.btnRight {
 	color: $btnCol;
+	width: 110px;
+	height: 38px;
+	&:active {
+		transform: scale(0.9);
+	}
 }
-.todo__error-message {
-	top: 120px;
-	left: 56px;
-	height: 10px;
+.TodoErrorMessage {
+	color: red;
 }
