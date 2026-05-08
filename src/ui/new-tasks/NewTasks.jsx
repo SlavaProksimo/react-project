@@ -1,11 +1,13 @@
 import TodoItem from "../todo-item/TodoItem";
-
+import styles from "../todo-item/TodoItem.module.scss";
 const NewTasks = ({
   tasks,
   setTasks,
-  setIsAddModalOpen,
-  setIsEditModalOpen,
   onEditClick,
+  onClickDelete,
+  handleCheckboxChange,
+  disappearingTaskId,
+  appearingTaskId,
 }) => {
   return (
     <ul className="todo-list__ul">
@@ -17,8 +19,16 @@ const NewTasks = ({
             id={task.id}
             setTasks={setTasks}
             onEditClick={onEditClick}
+            onClickDelete={() => onClickDelete(task.id)}
+            handleCheckboxChange={handleCheckboxChange}
+            disappearingTaskId={disappearingTaskId}
+            appearingTaskId={appearingTaskId}
           />
-          <hr />
+          <hr
+            className={`
+                  ${disappearingTaskId === task.id ? styles.isDisappearing : ""}
+                  ${appearingTaskId === task.id ? styles.isAppearing : ""}`}
+          />
         </div>
       ))}
     </ul>

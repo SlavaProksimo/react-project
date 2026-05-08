@@ -19,7 +19,6 @@ const HomePage = () => {
     setEditingTask(null);
   };
   const {
-    tasks,
     setTasks,
     searchTask,
     setFilter,
@@ -29,6 +28,10 @@ const HomePage = () => {
     showNotFound,
     finalTodos,
     handleEditClick,
+    onClickDelete,
+    handleCheckboxChange,
+    disappearingTaskId,
+    appearingTaskId,
   } = useTodos({
     closeAddModal,
     closeEditModal,
@@ -53,9 +56,11 @@ const HomePage = () => {
             <NewTasks
               tasks={finalTodos}
               setTasks={setTasks}
-              setIsAddModalOpen={setIsAddModalOpen}
-              setIsEditModalOpen={setIsEditModalOpen}
               onEditClick={handleEditClick}
+              onClickDelete={onClickDelete}
+              handleCheckboxChange={handleCheckboxChange}
+              disappearingTaskId={disappearingTaskId}
+              appearingTaskId={appearingTaskId}
             />
           </div>
           <ButtonAddTodo setIsAddModalOpen={setIsAddModalOpen} />

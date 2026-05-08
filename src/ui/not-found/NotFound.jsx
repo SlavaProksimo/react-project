@@ -1,11 +1,11 @@
 import { ThemeContext } from "@/context/ThemeProvider";
 import { memo, useContext } from "react";
-
+import styles from "./NotFound.module.scss";
 const NotFound = () => {
   const { theme } = useContext(ThemeContext);
   return (
     <div className="not-found">
-      <div className="not-found__img">
+      <div className={styles.notFoundImg}>
         {theme ? (
           <img src="src\assets\not-found-dark.png" alt="not found" />
         ) : (
