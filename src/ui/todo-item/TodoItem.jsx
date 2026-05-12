@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import clsx from "clsx";
 import tasksAPI from "@/api/tasksAPI";
 import styles from "./TodoItem.module.scss";
+
 const TodoItem = (props) => {
   const { title = "", isDone, setTasks, id, onEditClick } = props;
 
