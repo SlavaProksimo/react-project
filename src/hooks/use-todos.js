@@ -12,6 +12,10 @@ export const useTodos = ({
 
   const [searchTask, setSearchTask] = useState("");
   const [filter, setFilter] = useState("All");
+  // для хранения id исчезающей задачи(для анимации)
+  const [disappearingTaskId, setDisappearingTaskId] = useState(null);
+  // для хранения id новой задачи(для анимации)
+  const [appearingTaskId, setAppearingTaskId] = useState(null);
 
   //Сохраняем тудушки на сервере, после перезагрузки страницы
   useEffect(() => {
@@ -29,6 +33,10 @@ export const useTodos = ({
         tasksAPI.add(newTask).then((addedTask) => {
           setTasks((prev) => [...prev, addedTask]);
           closeAddModal();
+          setAppearingTaskId(addedTask.id);
+          setTimeout(() => {
+            setAppearingTaskId(null);
+          }, 400);
         });
       }
     },
@@ -49,6 +57,35 @@ export const useTodos = ({
       }
     },
     [closeEditModal],
+  );
+
+  //Удалить задачу
+  const onClickDelete = useCallback(
+    (id) => {
+      setDisappearingTaskId(id);
+      tasksAPI.delete(id).then(() => {
+        setTimeout(() => {
+          setTasks((prev) => prev.filter((t) => t.id !== id));
+          setDisappearingTaskId(null);
+        }, 400);
+      });
+    },
+    [setTasks],
+  );
+  //отмечаем галочкой
+  const handleCheckboxChange = useCallback(
+    (event, id) => {
+      const newIsDoneValue = event.target.checked;
+
+      tasksAPI.toggleComplete(id, newIsDoneValue).then(() => {
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === id ? { ...task, isDone: newIsDoneValue } : task,
+          ),
+        );
+      });
+    },
+    [setTasks],
   );
   // Обработчик клика на редактирование
   const handleEditClick = useCallback(
@@ -94,5 +131,9 @@ export const useTodos = ({
     showNotFound,
     finalTodos: filteredBySelect,
     handleEditClick,
+    onClickDelete,
+    handleCheckboxChange,
+    disappearingTaskId,
+    appearingTaskId,
   };
 };

@@ -1,7 +1,6 @@
 import { ThemeContext } from "@/context/ThemeProvider";
 import { memo, useContext } from "react";
 import styles from "./NotFound.module.scss";
-
 const NotFound = () => {
   const { theme } = useContext(ThemeContext);
   return (

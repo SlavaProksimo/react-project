@@ -1,5 +1,5 @@
 import HomePage from "./pages/home/HomePage";
-import { ThemeProvider } from "./context/themeProvider";
+import { ThemeProvider } from "./context/ThemeProvider";
 
 const App = () => {
   return (

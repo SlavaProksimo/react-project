@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import clsx from "clsx";
-import styles from "../search/Search.module.scss";
+import styles from "./FormInput.module.scss";
 const FormInput = ({
   name = "text",
   placeholder = "Input...",

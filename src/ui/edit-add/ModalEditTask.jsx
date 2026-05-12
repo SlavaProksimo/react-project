@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
 import FormInput from "../form-input/FormInput";
 import { useForm, FormProvider } from "react-hook-form";
@@ -5,7 +6,7 @@ import clsx from "clsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { textSchema } from "@/hooks/useSearchForm";
 import styles from "./EditAdd.module.scss";
-const ModalEditTask = ({ close, onApply, open }) => {
+const ModalEditTask = ({ close, onApply, open, initialValue }) => {
   const methods = useForm({
     resolver: zodResolver(textSchema),
     defaultValues: { text: "" },
@@ -15,7 +16,14 @@ const ModalEditTask = ({ close, onApply, open }) => {
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
   } = methods;
+  // для установки значения при открытии редактора
+  useEffect(() => {
+    if (open && initialValue) {
+      setValue("text", initialValue);
+    }
+  }, [open, initialValue, setValue]);
 
   const hasErrorTodoText = !!errors["text"];
   const todoErrorMessage = errors["text"]?.message;

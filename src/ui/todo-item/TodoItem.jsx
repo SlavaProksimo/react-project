@@ -1,10 +1,18 @@
 import { useCallback } from "react";
 import clsx from "clsx";
-import tasksAPI from "@/api/tasksAPI";
 import styles from "./TodoItem.module.scss";
 
 const TodoItem = (props) => {
-  const { title = "", isDone, setTasks, id, onEditClick } = props;
+  const {
+    title = "",
+    isDone,
+    id,
+    onEditClick,
+    onClickDelete,
+    handleCheckboxChange,
+    disappearingTaskId,
+    appearingTaskId,
+  } = props;
 
   //Редактировать задачу
   const handleEditClick = useCallback(
@@ -12,38 +20,20 @@ const TodoItem = (props) => {
       e.stopPropagation();
       onEditClick(id, title);
     },
-
     [title, id, onEditClick],
-  );
-  //Удалить задачу
-  const onClickDelete = useCallback(() => {
-    tasksAPI.delete(id).then(() => {
-      setTasks((prev) => prev.filter((t) => t.id !== id));
-    });
-  }, [setTasks, id]);
-  //отмечаем галочкой
-  const handleCheckboxChange = useCallback(
-    (event) => {
-      const newIsDoneValue = event.target.checked;
-
-      tasksAPI.toggleComplete(id, newIsDoneValue).then(() => {
-        setTasks((prev) =>
-          prev.map((task) =>
-            task.id === id ? { ...task, isDone: newIsDoneValue } : task,
-          ),
-        );
-      });
-    },
-    [id, setTasks],
   );
 
   return (
-    <li>
+    <li
+      className={`
+        ${disappearingTaskId === id ? styles.isDisappearing : ""}
+        ${appearingTaskId === id ? styles.isAppearing : ""}`}
+    >
       <div className="todo-list__new-todo">
         <input
           className="todo-list__input"
           type="checkbox"
-          onChange={handleCheckboxChange}
+          onChange={(e) => handleCheckboxChange(e, id)}
           checked={isDone}
         />
         <span
@@ -79,7 +69,7 @@ const TodoItem = (props) => {
         <button
           className={styles.btnDelete}
           type="button"
-          onClick={onClickDelete}
+          onClick={() => onClickDelete(id)}
         >
           <svg
             className="li-interaction__todo-delete__svg"

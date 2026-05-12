@@ -1,12 +1,11 @@
 import { useState } from "react";
 import ButtonAddTodo from "@/ui/button/ButtonAddTodo";
-import TodoAdd from "@/ui/todo-add/todoAdd";
-import NewTasks from "ui/new-tasks/NewTasks";
-import Search from "ui/search/Search";
+import NewTasks from "@/ui/new-tasks/NewTasks";
+import Search from "@/ui/search/search";
 import NotFound from "@/ui/not-found/NotFound";
 import { useTodos } from "@/hooks/use-todos";
 import ModalEditTask from "@/ui/edit-add/ModalEditTask";
-
+import TodoAdd from "@/ui/todo-add/TodoAdd.jsx";
 const HomePage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -20,7 +19,6 @@ const HomePage = () => {
     setEditingTask(null);
   };
   const {
-    tasks,
     setTasks,
     searchTask,
     setFilter,
@@ -30,6 +28,10 @@ const HomePage = () => {
     showNotFound,
     finalTodos,
     handleEditClick,
+    onClickDelete,
+    handleCheckboxChange,
+    disappearingTaskId,
+    appearingTaskId,
   } = useTodos({
     closeAddModal,
     closeEditModal,
@@ -54,9 +56,11 @@ const HomePage = () => {
             <NewTasks
               tasks={finalTodos}
               setTasks={setTasks}
-              setIsAddModalOpen={setIsAddModalOpen}
-              setIsEditModalOpen={setIsEditModalOpen}
               onEditClick={handleEditClick}
+              onClickDelete={onClickDelete}
+              handleCheckboxChange={handleCheckboxChange}
+              disappearingTaskId={disappearingTaskId}
+              appearingTaskId={appearingTaskId}
             />
           </div>
           <ButtonAddTodo setIsAddModalOpen={setIsAddModalOpen} />
