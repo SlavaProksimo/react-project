@@ -1,0 +1,11 @@
+.btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 38px;
+	height: 38px;
+
+	&:active {
+		background-color: #534cc2;
+	}
+}
