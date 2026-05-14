@@ -9,13 +9,14 @@ export default defineConfig({
       scss: {
         silenceDeprecations: ["legacy-js-api"],
         api: "modern",
+        additionalData: `@use "@/app/styles/variables" as *;`,
       },
     },
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      ui: path.resolve(__dirname, "./src/ui"),
+      "@app": path.resolve(__dirname, "./src/app"),
     },
   },
 });
