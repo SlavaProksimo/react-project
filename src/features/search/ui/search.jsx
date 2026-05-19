@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import ButtonTheme from "@/shared/ui/ButtonTheme/ButtonTheme";
-import Select from "@/features/filter-todo/Select";
+import Select from "@/features/filter-todo/ui/Select";
 import { memo, useState, useEffect } from "react";
 import useClickOutside from "@/shared/hooks/useClickOutside";
 import { useSearchForm } from "@/shared/hooks/useSearchForm";

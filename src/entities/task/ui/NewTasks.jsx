@@ -1,4 +1,4 @@
-import TodoItem from "@/entities/ui/TodoItem";
+import TodoItem from "@/entities/task/ui/TodoItem";
 import styles from "./TodoItem.module.scss";
 import { Flipper, Flipped } from "react-flip-toolkit";
 const NewTasks = ({

@@ -1,4 +1,4 @@
-import tasksAPI from "@/entities/api/tasksAPI";
+import tasksAPI from "@/entities/task/api/tasksAPI";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const useTodos = ({
