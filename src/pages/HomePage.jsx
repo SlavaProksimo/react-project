@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { ButtonAddTodo } from "@/shared/ui/ButtonAddTodo";
-import NewTasks from "@/entities/ui/NewTasks";
-import Search from "@/features/search/search";
+import NewTasks from "@/entities/task/ui/NewTasks";
+import Search from "@/features/search/ui/search";
 import NotFound from "@/shared/ui/NotFound/NotFound";
-import { useTodos } from "@/entities/model/use-todos";
-import ModalEditTask from "@/features/edit-todo/ModalEditTask";
-import TodoAdd from "@/features/add-todo/TodoAdd.jsx";
+import { useTodos } from "@/entities/task/model/use-todos";
+import ModalEditTask from "@/features/edit-todo/ui/ModalEditTask";
+import TodoAdd from "@/features/add-todo/ui/TodoAdd.jsx";
 const HomePage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
