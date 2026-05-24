@@ -72,7 +72,11 @@ const tasksAPI = {
     if (isServerAvailable) {
       try {
         const response = await fetch(TASKS_URL);
-        return response.json();
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        return await response.json();
       } catch {
         return storageAPI.getAll();
       }
@@ -82,6 +86,7 @@ const tasksAPI = {
 
   // Добавление задач
   add: async (task) => {
+    await checkServer();
     if (isServerAvailable) {
       try {
         const response = await fetch(TASKS_URL, {
@@ -89,7 +94,18 @@ const tasksAPI = {
           headers,
           body: JSON.stringify(task),
         });
-        return response.json();
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Server error: ${response.status} - ${errorText}`);
+        }
+
+        const newTask = await response.json();
+
+        const allTasks = storageAPI.getAll();
+        allTasks.push(newTask);
+        storageAPI.save(allTasks);
+
+        return newTask;
       } catch {
         return storageAPI.add(task);
       }
@@ -101,9 +117,18 @@ const tasksAPI = {
   delete: async (id) => {
     if (isServerAvailable) {
       try {
-        await fetch(`${TASKS_URL}/${id}`, { method: "DELETE" });
-      } catch {
+        const response = await fetch(`${TASKS_URL}/${id}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
         storageAPI.delete(id);
+      } catch (error) {
+        console.error("Delete failed:", error);
+        throw error;
       }
     } else {
       storageAPI.delete(id);
@@ -112,6 +137,8 @@ const tasksAPI = {
 
   // Изменение состояния таски
   toggleComplete: async (id, newIsDoneValue) => {
+    await checkServer();
+
     if (isServerAvailable) {
       try {
         const response = await fetch(`${TASKS_URL}/${id}`, {
@@ -119,7 +146,13 @@ const tasksAPI = {
           headers,
           body: JSON.stringify({ isDone: newIsDoneValue }),
         });
-        return response.json();
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const updatedTask = await response.json();
+        storageAPI.toggleComplete(id, newIsDoneValue);
+        return updatedTask;
       } catch {
         return storageAPI.toggleComplete(id, newIsDoneValue);
       }
@@ -129,6 +162,7 @@ const tasksAPI = {
 
   // Редактирование таски
   edit: async (id, newTitle) => {
+    await checkServer();
     if (isServerAvailable) {
       try {
         const response = await fetch(`${TASKS_URL}/${id}`, {
@@ -136,7 +170,12 @@ const tasksAPI = {
           headers,
           body: JSON.stringify({ title: newTitle }),
         });
-        return response.json();
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const updatedTask = await response.json();
+        storageAPI.edit(id, newTitle);
+        return updatedTask;
       } catch {
         return storageAPI.edit(id, newTitle);
       }

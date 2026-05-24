@@ -9,7 +9,7 @@ const NotFound = () => {
   return (
     <div className="not-found">
       <div className={styles.notFoundImg}>
-        {theme ? (
+        {theme === "dark" ? (
           <img src={notFoundDark} alt="not found" />
         ) : (
           <img src={notFoundLight} alt="not found" />

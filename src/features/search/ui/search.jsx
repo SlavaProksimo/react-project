@@ -69,7 +69,6 @@ const Search = ({ onInputChange, setFilter }) => {
             })}
           />
           <svg
-            disabled="disabled"
             className={clsx(styles.svg, {
               [styles.svgDisabled]: !inputLength && !hasError,
               [styles.svgActive]: activeSearchInput,

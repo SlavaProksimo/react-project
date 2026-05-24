@@ -22,26 +22,46 @@ export const useTodos = ({
     tasksAPI.getAll().then(setTasks);
   }, []);
 
+  const searchedTodos = useMemo(() => {
+    if (!searchTask.trim()) return tasks;
+    return tasks.filter((task) =>
+      task.title?.toLowerCase().includes(searchTask.toLowerCase()),
+    );
+  }, [searchTask, tasks]);
+
+  //Фильтрация для Select
+  const filteredBySelect = useMemo(() => {
+    switch (filter) {
+      case "Complete":
+        return searchedTodos.filter((task) => task.isDone === true);
+      case "Incomplete":
+        return searchedTodos.filter((task) => task.isDone === false);
+      case "All":
+      default:
+        return searchedTodos;
+    }
+  }, [filter, searchedTodos]);
+
+  //Если задач нету или не найдена , то показываем img
+  const showNotFound = filteredBySelect.length === 0;
+
   // Добавление задачи
-  const addNewTask = useCallback(
-    (title) => {
-      if (title.trim().length > 0) {
-        const newTask = {
-          title: title.trim(),
-          isDone: false,
-        };
-        tasksAPI.add(newTask).then((addedTask) => {
-          setTasks((prev) => [...prev, addedTask]);
-          closeAddModal();
-          setAppearingTaskId(addedTask.id);
-          setTimeout(() => {
-            setAppearingTaskId(null);
-          }, 400);
-        });
-      }
-    },
-    [closeAddModal],
-  );
+  const addNewTask = useCallback((title) => {
+    if (title.trim().length > 0) {
+      const newTask = {
+        title: title.trim().toLowerCase(),
+        isDone: false,
+      };
+      tasksAPI.add(newTask).then((addedTask) => {
+        setTasks((prev) => [...prev, addedTask]);
+        closeAddModal();
+        setAppearingTaskId(addedTask.id);
+        setTimeout(() => {
+          setAppearingTaskId(null);
+        }, 400);
+      });
+    }
+  }, []);
   // Редактируем задачу
   const updateTask = useCallback(
     async (taskId, newTitle) => {
@@ -98,27 +118,6 @@ export const useTodos = ({
   const handleInputChange = (value) => {
     setSearchTask(value);
   };
-  //поиск задач
-  const filteredTodos = useMemo(() => {
-    return searchTask
-      ? tasks.filter((task) => task.title?.includes(searchTask.toLowerCase()))
-      : tasks;
-  }, [searchTask, tasks]);
-
-  //Если задач нету или не найдена , то показываем img
-  const showNotFound = filteredTodos.length === 0;
-  //Фильтрация для Select
-  const filteredBySelect = useMemo(() => {
-    switch (filter) {
-      case "All":
-      default:
-        return filteredTodos;
-      case "Complete":
-        return filteredTodos.filter((task) => task.isDone === true);
-      case "Incomplete":
-        return filteredTodos.filter((task) => task.isDone === false);
-    }
-  }, [filter, filteredTodos]);
 
   return {
     tasks,

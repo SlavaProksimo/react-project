@@ -29,15 +29,16 @@
 }
 
 .isDisappearing {
-	// opacity: 1;
-	// translate: 20% -75%;
 	transition-duration: 0.6s;
 	animation: delete 0.6s;
 }
 .isAppearing {
 	animation: appearance 0.6s;
 }
-
+.checkboxLabel {
+	display: flex;
+	gap: 20px;
+}
 @keyframes appearance {
 	from {
 		opacity: 0.4;
