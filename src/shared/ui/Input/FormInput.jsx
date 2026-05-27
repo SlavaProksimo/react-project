@@ -7,6 +7,7 @@ const FormInput = ({
   className,
   onFocus,
   onBlur,
+  ...restProps
 }) => {
   const {
     control,
@@ -23,6 +24,7 @@ const FormInput = ({
         render={({ field }) => (
           <input
             {...field}
+            {...restProps}
             onBlur={(e) => {
               field.onBlur();
               onBlur?.(e);
