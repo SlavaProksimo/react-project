@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useClickOutside from "@/shared/hooks/useClickOutside";
 import FormInput from "@/shared/ui/Input/FormInput";
 import { useForm, FormProvider } from "react-hook-form";
@@ -6,7 +6,11 @@ import clsx from "clsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { textSchema } from "@/shared/hooks/useSearchForm";
 import styles from "./EditAdd.module.scss";
+
 const ModalEditTask = ({ close, onApply, open, initialValue }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
   const methods = useForm({
     resolver: zodResolver(textSchema),
     defaultValues: { text: "" },
@@ -22,26 +26,36 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
   useEffect(() => {
     if (open && initialValue) {
       setValue("text", initialValue);
+      setError(null);
     }
   }, [open, initialValue, setValue]);
 
   const hasErrorTodoText = !!errors["text"];
   const todoErrorMessage = errors["text"]?.message;
+
   //Кастомный хук для закрытия модалки
   const modalRef = useClickOutside(() => {
-    if (open) {
+    if (open && !isSubmitting) {
       close();
     }
   });
 
   // Обработчик отправки формы
-  const onSubmit = (data) => {
-    if (data?.text?.trim()?.length === 0) {
-      return;
+  const onSubmit = async (data) => {
+    if (data?.text?.trim()?.length === 0) return;
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      await onApply(data.text.trim());
+      reset();
+      close();
+    } catch (error) {
+      setError(err.message || "Ошибка при редактировании задачи");
+    } finally {
+      setIsSubmitting(false);
     }
-    onApply(data.text);
-    reset(); // Очищаем форму после добавления
-    close(); // Закрываем модалку
   };
 
   if (!open) return null;
@@ -54,6 +68,8 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
           <div className="todo-add__box">
             <h2 className={styles.todoAddTitle}>Edit Note</h2>
             <FormInput
+              disabled={isSubmitting}
+              autoFocus
               name="text"
               className={clsx(styles.input, {
                 [styles.inputError]: hasErrorTodoText,
@@ -64,11 +80,20 @@ const ModalEditTask = ({ close, onApply, open, initialValue }) => {
               <div className={styles.TodoErrorMessage}>{todoErrorMessage}</div>
             )}
             <div className={styles.btnBox}>
-              <button className={styles.btnLeft} type="button" onClick={close}>
+              <button
+                className={styles.btnLeft}
+                type="button"
+                onClick={close}
+                disabled={isSubmitting}
+              >
                 Cancel
               </button>
 
-              <button className={styles.btnRight} type="submit">
+              <button
+                className={styles.btnRight}
+                type="submit"
+                disabled={isSubmitting}
+              >
                 Save
               </button>
             </div>

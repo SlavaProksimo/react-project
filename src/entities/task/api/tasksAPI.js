@@ -12,11 +12,21 @@ const STORAGE_KEY = "todos";
 // для localStorage
 const storageAPI = {
   getAll: () => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      console.error("Ошибка чтения данных");
+      localStorage.removeItem(STORAGE_KEY);
+      return [];
+    }
   },
   save: (tasks) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    } catch (error) {
+      console.error("Не удалось сохранить", error);
+    }
   },
   add: (task) => {
     const tasks = storageAPI.getAll();
@@ -115,7 +125,9 @@ const tasksAPI = {
 
   // Удаление
   delete: async (id) => {
-    if (isServerAvailable) {
+    const serverUp = await checkServer();
+
+    if (serverUp) {
       try {
         const response = await fetch(`${TASKS_URL}/${id}`, {
           method: "DELETE",
@@ -124,7 +136,6 @@ const tasksAPI = {
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}`);
         }
-
         storageAPI.delete(id);
       } catch (error) {
         console.error("Delete failed:", error);
